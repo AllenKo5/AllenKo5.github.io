@@ -12,9 +12,6 @@
 <body>
     <div id="wrapper">
         <h1>DragonFable Damage Estimator</h1>
-        <div class="button">
-            <button id="reset-button">Reset Parameters</button>
-        </div>
         <button id="stat-toggle" class="toggle">
             <h2>Main Stat Modifiers</h2>
         </button>
@@ -36,12 +33,20 @@
                 <input type="number" id="boost" value="0">
             </div>
             <div class="container">
-                <label for="dmg">Damage</label><br>
-                <input type="number" id="dmg" value="0">
+                <label for="min-dmg">Min Damage</label><br>
+                <input type="number" id="min-dmg" value="0">
+            </div>
+            <div class="container">
+                <label for="max-dmg">Max Damage</label><br>
+                <input type="number" id="max-dmg" value="0">
+            </div>
+            <div class="container">
+                <label for="dmg">Average Damage</label><br>
+                <input type="text" id="dmg" value="0" disabled="true">
             </div>
             <div class="container">
                 <label for="base-dmg">Base Damage</label><br>
-                <input type="number" id="base-dmg" value="0" disabled="true">
+                <input type="text" id="base-dmg" value="0" disabled="true">
             </div>
         </section>
 
@@ -73,19 +78,19 @@
             </div>
             <div class="container">
                 <label for="dph-avg">Average Damage Per Hit</label><br>
-                <input type="number" id="dph-avg" value="0" disabled="true">
+                <input type="text" id="dph-avg" value="0" disabled="true">
             </div>
             <div class="container">
                 <label for="exp-dmg">Expected 100% Hit Damage</label><br>
-                <input type="number" id="exp-dmg" value="0" disabled="true">
+                <input type="text" id="exp-dmg" value="0" disabled="true">
             </div>
             <div class="container">
                 <label for="percent-hit">Percentage Per Hit</label><br>
-                <input type="number" id="percent-hit" value="0" disabled="true">
+                <input type="text" id="percent-hit" value="0" disabled="true">
             </div>
             <div class="container">
                 <label for="percent-total">Total Percentage</label><br>
-                <input type="number" id="percent-total" value="0" disabled="true">
+                <input type="text" id="percent-total" value="0" disabled="true">
             </div>
             <div class="button">
                 <button id="calc-button" type="button">Calculate</button>
@@ -97,25 +102,36 @@
         </button>
         <section id="dot" class="section">
             <div class="container">
-                <label for="dot-dmg">Displayed DoT Damage</label><br>
-                <input type="number" id="dot-dmg" value="0">
+                <label for="min-dot-dmg">Min Displayed DoT Damage</label><br>
+                <input type="number" id="min-dot-dmg" value="0">
             </div>
             <div class="container">
-                <label for="dot-tick">Damage Per Tick</label><br>
-                <input type="number" id="dot-tick" value="0" disabled="true">
+                <label for="max-dot-dmg">Max Displayed DoT Damage</label><br>
+                <input type="number" id="max-dot-dmg" value="0">
+            </div>
+            <div class="container">
+                <label for="avg-dot-dmg">Average Displayed DoT Damage</label><br>
+                <input type="text" id="avg-dot-dmg" value="0" disabled="true">
             </div>
             <div class="container">
                 <label for="exp-dot">Expected 100% DoT Damage</label><br>
-                <input type="number" id="exp-dot" value="0" disabled="true">
+                <input type="text" id="exp-dot" value="0" disabled="true">
+            </div>
+            <div class="container">
+                <label for="dot-tick">Expected Damage Per Tick</label><br>
+                <input type="text" id="dot-tick" value="0" disabled="true">
             </div>
             <div class="container">
                 <label for="dot-percent">DoT Tick Percentage</label><br>
-                <input type="number" id="dot-percent" value="0" disabled="true">
+                <input type="text" id="dot-percent" value="0" disabled="true">
             </div>
             <div class="button">
                 <button id="dot-button" type="button">Calculate</button>
             </div>
         </section>
+        <div class="button">
+            <button id="reset-button">Reset</button>
+        </div>
     </div>
     <footer></footer>
 </body>

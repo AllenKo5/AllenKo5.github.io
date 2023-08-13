@@ -15,8 +15,10 @@ const dotButton = document.querySelector('#dot-button');
 const str = document.querySelector('#str');
 const dex = document.querySelector('#dex');
 const int = document.querySelector('#int');
-const dmg = document.querySelector('#dmg');
 const boost = document.querySelector('#boost');
+const minDmg = document.querySelector('#min-dmg');
+const maxDmg = document.querySelector('#max-dmg');
+const dmg = document.querySelector('#dmg');
 const baseDamage = document.querySelector('#base-dmg');
 
 // enemy modifiers
@@ -32,12 +34,20 @@ const percentagePerHit = document.querySelector('#percent-hit');
 const totalPercentage = document.querySelector('#percent-total');
 
 // dot calc
-const displayedDotDamage = document.querySelector('#dot-dmg');
-const dotTickDamage = document.querySelector('#dot-tick');
+const minDotDamage = document.querySelector('#min-dot-dmg');
+const maxDotDamage = document.querySelector('#max-dot-dmg');
+const avgDisplayedDotDamage = document.querySelector('#avg-dot-dmg');
 const expectedDotDmg = document.querySelector('#exp-dot');
+const dotTickDamage = document.querySelector('#dot-tick');
 const dotTickPercentage = document.querySelector('#dot-percent');
 
-let outgoingDamage, totalDamageReduction, finalDamage, dotDamage, expDotDamage;
+// variables
+let minBaseDamage, maxBaseDamage, avgBaseDamage;
+let totalDamageMod, totalDotMod, totalCritMod;
+
+// TODO:
+// -factor crits into calculations
+
 
 // resets all parameters to 0
 const reset = () => {
@@ -52,55 +62,102 @@ const calcRatios = () => {
     let mainstat = str.value;
     if (parseInt(dex.value) > mainstat) { mainstat = dex.value; }
     if (parseInt(int.value) > mainstat) { mainstat = int.value; }
-    const baseDmg = dmg.value - Math.floor(mainstat / 10);
-    baseDamage.value = baseDmg;
+    dmg.value = (parseInt(minDmg.value) + parseInt(maxDmg.value)) / 2;
+    const statDmg = Math.floor(mainstat / 10);
+    minBaseDamage = minDmg.value - statDmg;
+    maxBaseDamage = maxDmg.value - statDmg;
+    avgBaseDamage = dmg.value - statDmg;
+    baseDamage.value = `${minBaseDamage} - ${maxBaseDamage} (avg. ${avgBaseDamage})`;
 
     // apply damage mods from main stats and boost
-    const strMod = str.value / 10;
-    const dexMod = dex.value / 40;
-    const dotMod = dex.value / 4;
-    outgoingDamage = dmg.value * (1 + strMod / 100);
-    outgoingDamage *= (1 + dexMod / 100);
-    outgoingDamage *= (1 + boost.value / 100);
+    const strBoost = str.value / 10;
+    const dexBoost = dex.value / 40;
+    const dotBoost = dex.value / 4;
+    const intBoost = int.value / 10;
 
-    // calculate resistance + damage reduction
-    totalDamageReduction = (100 - res.value) / 100;
-    totalDamageReduction *= (100 - dr.value) / 100;
+    // calculate mods to outgoing direct damage
+    let dmgMod = 1 + strBoost / 100;
+    dmgMod *= 1 + dexBoost / 100;
+    dmgMod *= 1 + boost.value / 100;
 
-    // calculate final damage
-    finalDamage = outgoingDamage * totalDamageReduction;
-    
-    // calculate dot damage based on stat mods and defenses
-    dotDamage = displayedDotDamage.value * (1 + dotMod / 100);
-    dotDamage *= totalDamageReduction;
+    // calculate mods to incoming direct damage
+    let defMod = (100 - res.value) / 100;
+    defMod *= (100 - dr.value) / 100;
 
-    // calculate expected dot damage based on stat mods and defenses
-    expDotDamage = baseDamage.value * (1 + dotMod / 100);
-    expDotDamage *= totalDamageReduction;
+    // calculate mod to outgoing dot damage
+    const dotMod = 1 + dotBoost / 100;
+
+    // calculate mod to incoming dot damage
+    const dotDefMod = (100 - res.value) / 100;
+
+    // calculate mods to outgoing critical direct damage
+    let critMod = 1.75 + intBoost / 100;
+    critMod *= 1 + dexBoost / 100;
+    critMod *= 1 + boost.value / 100;
+
+    // calculate final mods based on outgoing and incoming damage
+    totalDamageMod = dmgMod * defMod;
+    totalDotMod = dotMod * dotDefMod;
+    totalCritMod = critMod * defMod;
 };
 
 // calculate hit damage
 const calcDamage = () => {
     calcRatios();
-    expectedDamage.value = finalDamage.toFixed(2);
-    averageDamagePerHit.value = (totalDamageTaken.value / hits.value).toFixed(2);
-    percentagePerHit.value = (averageDamagePerHit.value / finalDamage * 100).toFixed(2);
-    totalPercentage.value = (totalDamageTaken.value / finalDamage * 100).toFixed(2);
+    // average damage taken per hit
+    const avgDmgPerHit = totalDamageTaken.value / hits.value;
+
+    // how much damage a 100% attack would do
+    const minExpDmg = minDmg.value * totalDamageMod;
+    const maxExpDmg = maxDmg.value * totalDamageMod;
+    const avgExpDmg = dmg.value * totalDamageMod;
+
+    // 1 hit as a percentage compared to 100%
+    const minPercentPerHit = avgDmgPerHit / maxExpDmg * 100;
+    const maxPercentPerHit = avgDmgPerHit / minExpDmg * 100;
+    const avgPercentPerHit = avgDmgPerHit / avgExpDmg * 100;
+
+    // all hits as a percentage compared to 100%
+    const minPercentTotal = minPercentPerHit * hits.value;
+    const maxPercentTotal = maxPercentPerHit * hits.value;
+    const avgPercentTotal = avgPercentPerHit * hits.value;
+
+    averageDamagePerHit.value = avgDmgPerHit.toFixed(2);
+    expectedDamage.value = `${Math.round(minExpDmg)} - ${Math.round(maxExpDmg)} (avg. ${Math.round(avgExpDmg)})`;
+    percentagePerHit.value = `${minPercentPerHit.toFixed(2)}% - ${maxPercentPerHit.toFixed(2)}% (avg. ${avgPercentPerHit.toFixed(2)}%)`;
+    totalPercentage.value = `${minPercentTotal.toFixed(2)}% - ${maxPercentTotal.toFixed(2)}% (avg. ${avgPercentTotal.toFixed(2)}%)`;
 };
 
 // calculate DoT damage
 const calcDoT = () => {
     calcRatios();
-    dotTickDamage.value = dotDamage.toFixed(2);
-    expectedDotDmg.value = expDotDamage.toFixed(2);
-    dotTickPercentage.value = (dotTickDamage.value / expectedDotDmg.value * 100).toFixed(2);
+    // average written DoT damage
+    const avgDotDamage = (parseInt(minDotDamage.value) + parseInt(maxDotDamage.value)) / 2;
+
+    // how much damage a 100% DoT would do
+    const minExpDot = minBaseDamage * totalDotMod;
+    const maxExpDot = maxBaseDamage * totalDotMod;
+    const avgExpDot = avgBaseDamage * totalDotMod;
+
+    // expected damage of DoT
+    const minDotTick = minDotDamage.value * totalDotMod;
+    const maxDotTick = maxDotDamage.value * totalDotMod;
+    const avgDotTick = avgDotDamage * totalDotMod;
+
+    // DoT damage as a percentage compared to 100%
+    const minDotPercent = minDotTick / avgExpDot * 100;
+    const maxDotPercent = maxDotTick / avgExpDot * 100;
+    const avgDotPercent = avgDotTick / avgExpDot * 100;
+
+    avgDisplayedDotDamage.value = avgDotDamage;
+    expectedDotDmg.value = `${Math.round(minExpDot)} - ${Math.round(maxExpDot)} (avg. ${Math.round(avgExpDot)})`;
+    dotTickDamage.value = `${Math.round(minDotTick)} - ${Math.round(maxDotTick)} (avg. ${Math.round(avgDotTick)})`;
+    dotTickPercentage.value = `${minDotPercent.toFixed(2)}% - ${maxDotPercent.toFixed(2)}% (avg. ${avgDotPercent.toFixed(2)}%)`;
 };
 
 // init function
 const init = () => {
-    resetButton.addEventListener('click', () => {
-        reset();
-    });
+    // clicking on heading hides section
     statToggle.addEventListener('click', () => {
         stats.classList.toggle('is-hidden');
     });
@@ -110,14 +167,19 @@ const init = () => {
     calcToggle.addEventListener('click', () => {
         calc.classList.toggle('is-hidden');
     });
-    calcButton.addEventListener('click', () => {
-        calcDamage();
-    });
     dotToggle.addEventListener('click', () => {
         dot.classList.toggle('is-hidden');
     });
+
+    // button functionality
+    calcButton.addEventListener('click', () => {
+        calcDamage();
+    });
     dotButton.addEventListener('click', () => {
         calcDoT();
+    });
+    resetButton.addEventListener('click', () => {
+        reset();
     });
 };
 

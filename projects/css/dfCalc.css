@@ -8,12 +8,19 @@ body {
     font-family: Sans-Serif;
 }
 
+input {
+    width: 70%;
+}
+
 #reset-button {
-    width: 150px;
-    height: 30px;
+    position: fixed;
+    width: 100px;
+    height: 40px;
+    right: 0;
+    bottom: 0;
     border: 1px solid gray;
     border-radius: 0.5em;
-    margin: 1em 0;
+    margin: 1em;
 }
 
 #calc-button,
