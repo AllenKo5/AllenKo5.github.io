@@ -27,8 +27,10 @@ const dr = document.querySelector('#dr');
 
 // damage calc 
 const hits = document.querySelector('#hits');
+const crits = document.querySelector('#crits');
 const totalDamageTaken = document.querySelector('#dmg-total');
 const averageDamagePerHit = document.querySelector('#dph-avg');
+const averageDamagePerCrit = document.querySelector('#dpc-avg');
 const expectedDamage = document.querySelector('#exp-dmg');
 const percentagePerHit = document.querySelector('#percent-hit');
 const totalPercentage = document.querySelector('#percent-total');
@@ -105,7 +107,12 @@ const calcRatios = () => {
 const calcDamage = () => {
     calcRatios();
     // average damage taken per hit
-    const avgDmgPerHit = totalDamageTaken.value / hits.value;
+    const nonCritHits = hits.value - crits.value;
+
+    // calculate average damage of hits and crits
+    const baseDamageValue = totalDamageTaken.value / ((nonCritHits * totalDamageMod) + (crits.value * totalCritMod));
+    const avgDmgPerHit = baseDamageValue * totalDamageMod;
+    const avgDmgPerCrit = baseDamageValue * totalCritMod;
 
     // how much damage a 100% attack would do
     const minExpDmg = minDmg.value * totalDamageMod;
@@ -122,7 +129,9 @@ const calcDamage = () => {
     const maxPercentTotal = maxPercentPerHit * hits.value;
     const avgPercentTotal = avgPercentPerHit * hits.value;
 
+    // update inputs with values
     averageDamagePerHit.value = avgDmgPerHit.toFixed(2);
+    averageDamagePerCrit.value = avgDmgPerCrit.toFixed(2);
     expectedDamage.value = `${Math.round(minExpDmg)} - ${Math.round(maxExpDmg)} (avg. ${Math.round(avgExpDmg)})`;
     percentagePerHit.value = `${minPercentPerHit.toFixed(2)}% - ${maxPercentPerHit.toFixed(2)}% (avg. ${avgPercentPerHit.toFixed(2)}%)`;
     totalPercentage.value = `${minPercentTotal.toFixed(2)}% - ${maxPercentTotal.toFixed(2)}% (avg. ${avgPercentTotal.toFixed(2)}%)`;
@@ -149,6 +158,7 @@ const calcDoT = () => {
     const maxDotPercent = maxDotTick / avgExpDot * 100;
     const avgDotPercent = avgDotTick / avgExpDot * 100;
 
+    // update inputs with values
     avgDisplayedDotDamage.value = avgDotDamage;
     expectedDotDmg.value = `${Math.round(minExpDot)} - ${Math.round(maxExpDot)} (avg. ${Math.round(avgExpDot)})`;
     dotTickDamage.value = `${Math.round(minDotTick)} - ${Math.round(maxDotTick)} (avg. ${Math.round(avgDotTick)})`;
