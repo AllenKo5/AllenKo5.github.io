@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DragonFable Damage Estimator</title>
+    <link rel="stylesheet" href="css/dfCalc.css">
+    <script type="module" src="js/dfCalc.js"></script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <h1>DragonFable Damage Estimator</h1>
+        <div class="button">
+            <button id="reset-button">Reset Parameters</button>
+        </div>
+        <button id="stat-toggle" class="toggle">
+            <h2>Main Stat Modifiers</h2>
+        </button>
+        <section id="stats" class="section">
+            <div class="container">
+                <label for="str">Strength</label><br>
+                <input type="number" id="str" value="0">
+            </div>
+            <div class="container">
+                <label for="dex">Dexterity</label><br>
+                <input type="number" id="dex" value="0">
+            </div>
+            <div class="container">
+                <label for="int">Intellect</label><br>
+                <input type="number" id="int" value="0">
+            </div>
+            <div class="container">
+                <label for="boost">Boost</label><br>
+                <input type="number" id="boost" value="0">
+            </div>
+            <div class="container">
+                <label for="dmg">Damage</label><br>
+                <input type="number" id="dmg" value="0">
+            </div>
+            <div class="container">
+                <label for="base-dmg">Base Damage</label><br>
+                <input type="number" id="base-dmg" value="0" disabled="true">
+            </div>
+        </section>
+
+        <button id="mod-toggle" class="toggle">
+            <h2>Defensive Modifiers</h2>
+        </button>
+        <section id="modifiers" class="section">
+            <div class="container">
+                <label for="res">Resistance + All</label><br>
+                <input type="number" id="res" value="0">
+            </div>
+            <div class="container">
+                <label for="dr">Damage Reduction</label><br>
+                <input type="number" id="dr" value="0">
+            </div>
+        </section>
+
+        <button id="calc-toggle" class="toggle">
+            <h2>Damage Estimator</h2>
+        </button>
+        <section id="calc" class="section">
+            <div class="container">
+                <label for="hits">Hits</label><br>
+                <input type="number" id="hits" value="0">
+            </div>
+            <div class="container">
+                <label for="dmg-total">Total Damage Taken</label><br>
+                <input type="number" id="dmg-total" value="0">
+            </div>
+            <div class="container">
+                <label for="dph-avg">Average Damage Per Hit</label><br>
+                <input type="number" id="dph-avg" value="0" disabled="true">
+            </div>
+            <div class="container">
+                <label for="exp-dmg">Expected 100% Hit Damage</label><br>
+                <input type="number" id="exp-dmg" value="0" disabled="true">
+            </div>
+            <div class="container">
+                <label for="percent-hit">Percentage Per Hit</label><br>
+                <input type="number" id="percent-hit" value="0" disabled="true">
+            </div>
+            <div class="container">
+                <label for="percent-total">Total Percentage</label><br>
+                <input type="number" id="percent-total" value="0" disabled="true">
+            </div>
+            <div class="button">
+                <button id="calc-button" type="button">Calculate</button>
+            </div>
+        </section>
+
+        <button id="dot-toggle" class="toggle">
+            <h2>DoT Estimator</h2>
+        </button>
+        <section id="dot" class="section">
+            <div class="container">
+                <label for="dot-dmg">Displayed DoT Damage</label><br>
+                <input type="number" id="dot-dmg" value="0">
+            </div>
+            <div class="container">
+                <label for="dot-tick">Damage Per Tick</label><br>
+                <input type="number" id="dot-tick" value="0" disabled="true">
+            </div>
+            <div class="container">
+                <label for="exp-dot">Expected 100% DoT Damage</label><br>
+                <input type="number" id="exp-dot" value="0" disabled="true">
+            </div>
+            <div class="container">
+                <label for="dot-percent">DoT Tick Percentage</label><br>
+                <input type="number" id="dot-percent" value="0" disabled="true">
+            </div>
+            <div class="button">
+                <button id="dot-button" type="button">Calculate</button>
+            </div>
+        </section>
+    </div>
+    <footer></footer>
+</body>
+
+</html>
