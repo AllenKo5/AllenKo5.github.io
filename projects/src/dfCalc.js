@@ -47,9 +47,6 @@ const dotTickPercentage = document.querySelector('#dot-percent');
 let minBaseDamage, maxBaseDamage, avgBaseDamage;
 let totalDamageMod, totalDotMod, totalCritMod;
 
-// TODO:
-// -factor crits into calculations
-
 
 // resets all parameters to 0
 const reset = () => {
