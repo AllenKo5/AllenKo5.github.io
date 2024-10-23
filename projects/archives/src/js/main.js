@@ -1,21 +1,15 @@
-const deckInput = document.querySelector('#deck-input');
-const deckOutput = document.querySelector('#deck-output');
-const button = document.querySelector('#button');
+const card = document.querySelector('#card');
+const load = document.querySelector('#load');
+
+const loadCard = () => {
+    const SCRYFALL_URL = 'https://api.scryfall.com/cards/named?'
+    let url = SCRYFALL_URL;
+
+    console.log(url);
+};
 
 const init = () => {
-    button.addEventListener('click', () => {
-        let output='';
-        const lines = deckInput.value.split('\n');
-        for (let i = 0; i < lines.length; i++){
-            if (lines[i].indexOf('+') > -1) {
-                output += `${lines[i].substring(0, lines[i].indexOf('+'))}\n`;
-            }
-            else if (lines[i].indexOf('|') > -1) {
-                output += `${lines[i].substring(0, lines[i].indexOf('|'))}\n`;
-            }
-        }
-        deckOutput.innerHTML = output;
-    });
+    load.addEventListener('click', loadCard);
 };
 
 init();
