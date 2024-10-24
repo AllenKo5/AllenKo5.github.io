@@ -1,0 +1,26 @@
+<section class="results">
+    <div class="buttons">
+        <button id="load-deck" (click)="loadDeck()">Load Deck</button>
+    </div>
+    <h2 id="deck-name">{{ decklist[0].name }}</h2>
+    <div id="deck-wrapper">
+        <div id="main">
+            <h3>Main Deck</h3>
+            <div id="main-deck">
+                <p class="card" *ngFor="let cards of decklist[0].main">
+                    <span>{{ cards }}</span>
+                </p>
+            </div>
+        </div>
+        <div id="side">
+            <h3>Sideboard</h3>
+            <div id="side-deck">
+                <p class="card" *ngFor="let cards of decklist[0].side">
+                    <span>{{ cards }}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <h3>Notes</h3>
+    <div id="notes"> {{ decklist[0].notes }} </div>
+</section>
