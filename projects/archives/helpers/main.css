@@ -1,7 +1,6 @@
 body {
     background-color: skyblue;
     font-family: Arial, Helvetica, sans-serif;
-<<<<<<<< HEAD:projects/archives/helpers/main.css
 }
 
 label {
@@ -34,6 +33,4 @@ textarea {
     background-color: lightblue;
     border-radius: 10px;
     font-size: 20px;
-========
->>>>>>>> a2d35083f83cd6c2bf04b085e5524ceddb20522d:projects/archives/src/css/main.css
 }
