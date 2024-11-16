@@ -13,7 +13,10 @@ function cleanDeck(): void {
     let output = '';
     const lines = cleanInput?.value.split('\n') || [];
     for (let i = 0; i < lines.length; i++) {
-        if (lines[i].indexOf('+') > -1) {
+        if (lines[i].indexOf('[Sideboard]') > -1) {
+            output += `sideboard\n`;
+        }
+        else if (lines[i].indexOf('+') > -1) {
             output += `${lines[i].substring(0, lines[i].indexOf('+'))}\n`;
         }
         else if (lines[i].indexOf('|') > -1) {

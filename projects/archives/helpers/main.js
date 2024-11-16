@@ -9,7 +9,10 @@ function cleanDeck() {
     var output = '';
     var lines = (cleanInput === null || cleanInput === void 0 ? void 0 : cleanInput.value.split('\n')) || [];
     for (var i = 0; i < lines.length; i++) {
-        if (lines[i].indexOf('+') > -1) {
+        if (lines[i].indexOf('[Sideboard]') > -1) {
+            output += `sideboard\n`;
+        }
+        else if (lines[i].indexOf('+') > -1) {
             output += "".concat(lines[i].substring(0, lines[i].indexOf('+')), "\n");
         }
         else if (lines[i].indexOf('|') > -1) {
