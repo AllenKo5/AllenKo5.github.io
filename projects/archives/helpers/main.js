@@ -1,3 +1,4 @@
+"use strict";
 var cleanInput = document.querySelector('#clean-input');
 var cleanOutput = document.querySelector('#clean-output');
 var clean = document.querySelector('#clean');
@@ -16,11 +17,11 @@ function cleanDeck() {
         }
     }
     if (cleanOutput) {
-        cleanOutput.innerHTML = output;
+        cleanOutput.value = output;
     }
 }
 ;
-var convertDeck = function () {
+function convertDeck() {
     var output = '"main": [\n';
     var lines = (convertInput === null || convertInput === void 0 ? void 0 : convertInput.value.split('\n')) || [];
     var i = 0;
@@ -39,14 +40,11 @@ var convertDeck = function () {
     if (convertOutput) {
         convertOutput.innerHTML = output;
     }
-};
-function init() {
-    if (clean) {
-        clean.addEventListener('click', cleanDeck);
-    }
-    if (convert) {
-        convert.addEventListener('click', convertDeck);
-    }
 }
 ;
-init();
+if (clean) {
+    clean.addEventListener('click', cleanDeck);
+}
+if (convert) {
+    convert.addEventListener('click', convertDeck);
+}

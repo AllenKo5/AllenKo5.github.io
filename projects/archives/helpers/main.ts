@@ -7,6 +7,9 @@ const convertOutput = document.querySelector<HTMLElement>('#convert-output');
 const convert = document.querySelector<HTMLElement>('#convert');
 
 function cleanDeck(): void {
+    if (cleanOutput) {
+        cleanOutput.innerHTML = '';
+    }
     let output = '';
     const lines = cleanInput?.value.split('\n') || [];
     for (let i = 0; i < lines.length; i++) {
